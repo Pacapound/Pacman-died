@@ -15,6 +15,8 @@ myoctagon(100)
 t.up()
 t.color(1, 1, 1)
 t.forward(200)
+print("looks like honeycomb")
 
 for x in range(0, 100):
 	t.left(7.2)
+
