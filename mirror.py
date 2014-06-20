@@ -1,0 +1,30 @@
+import turtle
+m = turtle.Pen()
+n = turtle.Pen()
+def ggg(size):
+	for x in range(1, 50):
+		m.forward(size)
+		m.left(156)
+		m.up()
+		m.forward(30)
+		m.right(314)
+		m.down()
+		n.backward(size)
+		n.right(156)
+		n.up()
+		n.backward(30)
+		n.left(326)
+		n.down()
+
+m.color(1, 0, 1)
+n.color(0, 1, 0)
+ggg(500)
+
+m.color(1, 1, 1)
+n.color(1, 1, 1)
+m.up()
+n.up()
+m.forward(1000)
+n.backward(1000)
+m.circle(100)
+n.circle(-100)
