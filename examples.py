@@ -16,4 +16,4 @@ t = Pen()
 
 
 import turtle
-t.setup(width=1000, height=1000
+t.setup(width=1000, height=1000)
