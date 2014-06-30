@@ -11,7 +11,7 @@
 
   // This is where stuff in our game will happen:
   var scene = new Physijs.Scene({ fixedTimeStep: 2 / 60 });
-  scene.setGravity(new THREE.Vector3( 0, -1000, 0 ));
+  scene.setGravity(new THREE.Vector3( -100, -100, -100 ));
 
   // This is what sees the stuff:
   var width = window.innerWidth,
