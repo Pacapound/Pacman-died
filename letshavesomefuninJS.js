@@ -32,7 +32,7 @@
   document.body.appendChild(renderer.domElement);
   document.body.style.backgroundColor = '#ffffff';
 
-  // ******** START CODING ON THE NEXT LINE ********
+  // ******** START CODING ON THE NEXT LINE *********
 startAnime();
 function startAnime()  {
 var ground = addGround();
