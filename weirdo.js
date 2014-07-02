@@ -4,7 +4,7 @@
 <script src="http://gamingJS.com/Scoreboard.js"></script>
 <script src="http://gamingJS.com/ChromeFixes.js"></script>
 <script>
-// This is where stuff in our game will happen:
+// This is where stuff in our game will htappen:
 Physijs.scripts.ammo = 'http://gamingJS.com/ammo.js';
 Physijs.scripts.worker = 'http://gamingJS.com/physijs_worker.js';
 var scene = new Physijs.Scene({ fixedTimeStep: 2 / 60 });

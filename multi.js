@@ -42,6 +42,12 @@ border.position.set(1.2*x, 1.2*y, 0);
 return border;
 }
 */
+document.addEventListener("keydown", function(event) {
+  var code = event.keyCode;
+    if (code == 32) scoreboard.countdown(20);
+    });
+
+
 function makeBorder(x, y, w, h) {
 var border = new Physijs.BoxMesh(
 new THREE.CubeGeometry(w, h, 100),
@@ -57,6 +63,7 @@ scene.add(makeBorder(width/-2, 0, 50, height));
 scene.add(makeBorder(width/2, 0, 50, height));
 scene.add(makeBorder(0, height/2, width, 50));
 scene.add(makeBorder(0, height/-2, width, 50));
+
 var avatar = new Physijs.ConvexMesh(
 new THREE.CylinderGeometry(30, 30, 5, 16),
 Physijs.createMaterial(
@@ -76,7 +83,7 @@ if (code == 39) move(50); // right arrow
 function move(x) {
 var v_y = avatar.getLinearVelocity().y,
 v_x = avatar.getLinearVelocity().x;
-if (Math.abs(v_x + x) > 500) return;
+if (Math.abs(v_x + x) > 1000) return;
 avatar.setLinearVelocity(
 new THREE.Vector3(v_x + x, v_y, 0)
 );
@@ -131,6 +138,7 @@ document.addEventListener('keydown', function(event) {
 if (mesh.isActive) return;
 if (event.keyCode != 83) return; // S
 me.rotate(0.1);
+Sounds.bubble.play();
 });
 };
 var ramp1 = new Ramp(-width/4, height/4);
@@ -145,7 +153,8 @@ scoreboard.help(
 "Click and drag blue ramps. " +
 "Click blue ramps and press S to spin. " +
 "Left and right arrows to move player. " +
-"Be quick!"
+"Be quick! " +
+"Press Space every level for a time challenge!"
 );
 scoreboard.onTimeExpired(function() {
 scoreboard.setMessage("Game Over!");
@@ -153,7 +162,9 @@ gameOver();
 });
 var pause = false;
 function gameOver() {
-if (scoreboard.getTimeRemaining() > 0) scoreboard.setMessage('Win!');
+if (scoreboard.getTimeRemaining() > 560) scoreboard.setMessage('Win!');
+if (scoreboard.getTimeRemaining() < 560) scoreboard.setMessage('Win, but you are too slow!');
+if (scoreboard.getTimeRemaining() === 0) scoreboard.setMessage('You lose, slowpoke!');
 scoreboard.stopCountdown();
 scoreboard.stopTimer();
 pause = true;
@@ -211,8 +222,7 @@ var levels = new Levels(scoreboard, scene);
 levels.addLevel([]);
 levels.addLevel([
 buildObstacle('platform', 0, 0.5 * height/2 * Math.random())
-]);
-levels.addLevel([
+]);levels.addLevel([
 buildObstacle('platform', 0, 0.5 * height/2 * Math.random()),
 buildObstacle('platform', 0, -0.5 * height/2 * Math.random())
 ]);
@@ -223,30 +233,36 @@ buildObstacle('stalactite', -0.33 * width, height/2),
 buildObstacle('stalactite', 0.33 * width, height/2)
 ]);
 levels.addLevel([
-buildObstacle('platform', 0, 0.5 * height/8 * Math.random()),
-buildObstacle('platform', 0, -0.5 * height/5 * Math.random()),
-buildObstacle('stalactite', -0.66 * width/4, height/2),
-buildObstacle('stalactite', 0.66 * width/3, height/2),
-buildObstacle('platform', 0, 0.9 * height/3 * Math.random()),
-buildObstacle('platform', 0, -0.9 * height/2 * Math.random()),
-buildObstacle('stalactite', -0.33 * width/6, height/2),
-buildObstacle('stalactite', 0.33 * width/7, height/2),
-buildObstacle('stalactite', 0.44 * width/2, height/3),
-buildObstacle('stalactite', -0.44 * width/5, height/3)
+buildObstacle('platform', 0, 0.5 * height/2 * Math.random()),
+buildObstacle('platform', 0, -0.5 * height/2 * Math.random()),
+buildObstacle('stalactite', -0.11 * width/2, height/2),
+buildObstacle('stalactite', 0.22 * width/5, height/2),
+buildObstacle('platform', 0, 0.5 * height/2 * Math.random()),
+buildObstacle('platform', 0, -0.5 * height/2 * Math.random()),
+buildObstacle('stalactite', -0.33 * width/3, height/2),
+buildObstacle('stalactite', 0.44 * width/7, height/2),
+buildObstacle('stalactite', -0.2 * width, height/4),
+buildObstacle('stalactite', 0.2 * width, height/4),
+buildObstacle('stalactite', -0.4 * width, height/4),
+buildObstacle('stalactite', 0.4 * width, height/4)
 ]);
+
 avatar.addEventListener('collision', function(object) {
 if (!object.isGoal) return;
 if (!levels.hasMoreLevels()) return gameOver();
 moveGoal();
 levels.levelUp();
+//if (scoreboard.getTimeRemaining() > 560) scoreboard.setMessage('Level Up!');
+//else if (scoreboard.getTimeRemaining() < 560) scoreboard.setMessage('Finally made it, eh slowpoke? Good luck on making it on time now!');
+//setTimeout(scoreboard.setMessage(), 2*1000);
 });
 avatar.addEventListener('collision', function(object) {
 if (object.isGoal) Sounds.guitar.play();
-else Sounds.click.play();
+else Sounds.drip.play();
 });
 function moveGoal() {
 scene.remove(goal);
-setTimeout(placeGoal, 2*1000);
+setTimeout(placeGoal, 0.05*1000);
 }
 // Animate motion in the game
 function animate() {

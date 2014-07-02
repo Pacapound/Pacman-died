@@ -34,7 +34,7 @@
   document.body.appendChild(renderer.domElement);
   document.body.style.backgroundColor = '#9999aa';
 
-  // ******** START CODING ON THE NEXT LINE ********
+  // ******** START CODING ON THE NEXT LINE *****t***
 function makeBorder(x, y, w, h) {
   var border = new Physijs.BoxMesh(
     new THREE.CubeGeometry(w, h, 100),

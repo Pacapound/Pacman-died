@@ -66,7 +66,7 @@ new THREE.MeshBasicMaterial({color:0xbb0000}), 0.2, 0.5
 avatar.rotation.set(Math.PI/2, 0, 0);
 avatar.position.set(0.5 * width/-2, -height/2 + 25 + 30, 0);
 scene.add(avatar);
-avatar.setAngularFactor(new THREE.Vector3( 0, 0, 0 )); // don't rotate
+avatar.setAngularFactor(new THREE.Vector3( 0, 0, 0 )); // don't rotatez
 avatar.setLinearFactor(new THREE.Vector3( 1, 1, 0 )); // only move on X and Y axis
 document.addEventListener("keydown", function(event) {
 var code = event.keyCode;
