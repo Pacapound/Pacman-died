@@ -25,7 +25,8 @@ scoreboard.help(
 'Arrow keys to move; ' +
 'Space bar to jump for fruit; ' +
 'Watch for shaking trees with fruit.' +
-'Get near the tree and jump before the fruit is gone!'
+'Get near the tree and jump before the fruit is gone! '
+'Hint: Hold the space bar. Cool exploit, eh?'
 );
 var game_over = false;
 scoreboard.onTimeExpired(function() {
