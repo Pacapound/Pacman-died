@@ -2,6 +2,7 @@
 <script src="http://gamingJS.com/Three.js"></script>
 <script src="http://gamingJS.com/physi.js"></script>
 <script src="http://gamingJS.com/ChromeFixes.js"></script>
+<script src="http://gamingJS/com/Scoreboard.js"></script>
 
 <script>
   // Physics settings
@@ -16,41 +17,30 @@
   var width = window.innerWidth,
       height = window.innerHeight,
       aspect_ratio = width / height;
-  //var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
-   var camera = new THREE.OrthographicCamera(
-     -width/2, width/2, height/2, -height/2, 1, 10000
-   );
+  var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
+  // var camera = new THREE.OrthographicCamera(
+  //   -width/2, width/2, height/2, -height/2, 1, 10000
+  // );
 
   camera.position.z = 500;
-  //camera.position.y = 300;
   scene.add(camera);
 
   // This will draw what the camera sees onto the screen:
-  var renderer = new THREE.WebGLRenderer();
+  var renderer = new THREE.CanvasRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   document.body.style.backgroundColor = '#ffffff';
 
   // ******** START CODING ON THE NEXT LINE ********
-var ground = addGround();
-var avatar = addAvatar();
 function addGround() {
-  var ground = new Physijs.PlaneMesh(
-    new THREE.PlaneGeometry(1e6, 136, 100),
-    new THREE.MeshBasicMaterial({color: 0x999900})
-  );
-  scene.add(ground);
-  return(ground);
+ var ground = new Physijs.ConvexMesh(
+   new THREE.CubeGeometry(200, 200, 200, 200),
+   Physijs.createMaterial(
+     new THREE.MeshBasicMaterial({color: 0xbb0000}), 0.2, 0.5
+     )
+    );
 }
-function addAvatar() {
-  var avatar = new Physijs.BoxMesh(
-    new THREE.CubeGeometry(50, 40, 20),
-    new THREE.MeshBasicMaterial({color:0x0000ff})
- );
-  scene.add(avatar);
-  avatar.position.set(0, 100, 0);
-  return avatar;
-}
+var ground = addGround();
 
 
   // Animate motion in the game
