@@ -3,6 +3,8 @@
 <script src="http://gamingJS.com/physi.js"></script>
 <script src="http://gamingJS.com/Scoreboard.js"></script>
 <script src="http://gamingJS.com/ChromeFixes.js"></script>
+<script src="http://gamingJS.com/ammo.js"></script>
+<script src="http://gamingJS.com/physijs_worker.js"></script>
 <script>
 // This is where stuff in our game will happen:
 Physijs.scripts.ammo = 'http://gamingJS.com/ammo.js';
@@ -65,9 +67,10 @@ scoreboard.message("Game Over!");
 }
 if (object.is_rock) {
   scoreboard.subtractPoints(20);
-  avatar.setLinearVelocity(new THREE.Vector3(-100, 200, 0));
+  avatar.setLinearVelocity(new THREE.Vector3(-200, 200, 0));
   scene.remove(object);
 }
+
 });
 return avatar;
 }
@@ -97,6 +100,7 @@ function rockOrFruit() {
   if (rand < 0.5) launchFruit();
   if (rand > 0.5) launchRock(); 
 }
+
 function launchFruit() {
 var fruit = new Physijs.ConvexMesh(
 new THREE.CylinderGeometry(20, 20, 1, 24),
@@ -141,6 +145,12 @@ rock.setLinearVelocity(
 new THREE.Vector3(-150, 0, 0)
 );
 }
+function launchFruit2() {
+
+}
+function launchDead() {
+
+}
 document.addEventListener("keydown", function(event) {
 var code = event.keyCode;
 if (code == 37) left(); // left arrow
@@ -157,6 +167,23 @@ avatar.setLinearVelocity(
 new THREE.Vector3(x, y, 0)
 );
 }
+fruit2.addEventListener('collision', function() {
+  if (object.is_fruit) {
+fruit.setLinearVelocity(new THREE.Vector3(0, 200, 20));
+}
+if (object.is_rock) {
+  rock.setLinearVelocity(0, 300, -20);
+  
+}
+});
+dead.addEventListener('collision', function() {
+  if (object.is_fruit) {
+fruit.setLinearVelocity(new THREE.Vector3(0, 200, 20));
+}
+if (object.is_rock) {
+  rock.setLinearVelocity(0, 300, -20);
+}
+});
 function reset() {
 avatar.__dirtyPosition = true;
 avatar.position.set(-50, 50, 0);
