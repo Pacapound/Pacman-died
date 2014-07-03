@@ -4,7 +4,7 @@
 <script src="http://gamingJS.com/Scoreboard.js"></script>
 <script src="http://gamingJS.com/ChromeFixes.js"></script>
 <script>
-// This is where stuff in our game will htappen:
+// This is where stuff in our game will happen:
 Physijs.scripts.ammo = 'http://gamingJS.com/ammo.js';
 Physijs.scripts.worker = 'http://gamingJS.com/physijs_worker.js';
 var scene = new Physijs.Scene({ fixedTimeStep: 2 / 60 });
@@ -56,7 +56,7 @@ avatar.setLinearVelocity(new THREE.Vector3(0, 150, 0));
 avatar.addEventListener('collision', function(object) {
 if (object.is_fruit) {
 scoreboard.addPoints(10);
-avatar.setLinearVelocity(new THREE.Vector3(0, 50, 0));
+avatar.setLinearVelocity(new THREE.Vector3(0, 300, 0));
 scene.remove(object);
 }
 if (object == ground) {
@@ -116,7 +116,7 @@ if (code == 82) reset(); // R
 });
 function left() { move(-50, 0); }
 function right() { move(50, 0); }
-function up() { move(avatar.getLinearVelocity().x, 50); }
+function up() { move(avatar.getLinearVelocity().x, 300); }
 function move(x, y) {
 avatar.setLinearVelocity(
 new THREE.Vector3(x, y, 0)
@@ -125,7 +125,7 @@ new THREE.Vector3(x, y, 0)
 function reset() {
 avatar.__dirtyPosition = true;
 avatar.position.set(-50, 50, 0);
-avatar.setLinearVelocity(new THREE.Vector3(0, 150, 0));
+avatar.setLinearVelocity(new THREE.Vector3(0, 300, 0));
 for (var i in scene._objects) {
 if (scene._objects[i].is_fruit) {
 scene.remove(scene._objects[i]);
