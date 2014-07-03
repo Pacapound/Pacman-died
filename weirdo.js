@@ -56,12 +56,17 @@ avatar.setLinearVelocity(new THREE.Vector3(0, 150, 0));
 avatar.addEventListener('collision', function(object) {
 if (object.is_fruit) {
 scoreboard.addPoints(10);
-avatar.setLinearVelocity(new THREE.Vector3(0, 300, 0));
+avatar.setLinearVelocity(new THREE.Vector3(0, 200, 0));
 scene.remove(object);
 }
 if (object == ground) {
 game_over = true;
 scoreboard.message("Game Over!");
+}
+if (object.is_rock) {
+  scoreboard.subtractPoints(20);
+  avatar.setLinearVelocity(new THREE.Vector3(-100, 200, 0));
+  scene.remove(object);
 }
 });
 return avatar;
@@ -69,7 +74,10 @@ return avatar;
 function addScoreboard() {
 var scoreboard = new Scoreboard();
 scoreboard.score(0);
-scoreboard.help('Use arrow keys to move and the space bar to jump');
+scoreboard.help(
+'Use arrow keys to move and the space bar to jump. ' + 
+"Don't eat the rolling Purple Fruit Monsters!"
+);
 return scoreboard;
 }
 var game_over = false;
@@ -81,8 +89,13 @@ renderer.render(scene, camera);
 }
 function gameStep() {
 if (game_over) return;
-launchFruit();
+rockOrFruit();
 setTimeout(gameStep, 3*1000);
+}
+function rockOrFruit() {
+  rand = Math.random();
+  if (rand < 0.5) launchFruit();
+  if (rand > 0.5) launchRock(); 
 }
 function launchFruit() {
 var fruit = new Physijs.ConvexMesh(
@@ -106,6 +119,28 @@ fruit.setLinearVelocity(
 new THREE.Vector3(-150, 0, 0)
 );
 }
+function launchRock() {
+var rock = new Physijs.ConvexMesh(
+new THREE.CylinderGeometry(20, 20, 1, 24),
+new THREE.MeshBasicMaterial({visible: false})
+);
+var material = new THREE.MeshBasicMaterial({
+map: THREE.ImageUtils.loadTexture('/images/purple_fruit_monster.png'),
+transparent: true
+});
+var picture = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), material);
+picture.rotation.x = -Math.PI/2;
+rock.add(picture);
+rock.is_rock = true;
+rock.setAngularFactor(new THREE.Vector3( 0, 0, 1 ));
+rock.setLinearFactor(new THREE.Vector3( 1, 1, 0 ));
+rock.position.set(300, 20, 0);
+rock.rotation.x = Math.PI/2;
+scene.add(rock);
+rock.setLinearVelocity(
+new THREE.Vector3(-150, 0, 0)
+);
+}
 document.addEventListener("keydown", function(event) {
 var code = event.keyCode;
 if (code == 37) left(); // left arrow
@@ -116,7 +151,7 @@ if (code == 82) reset(); // R
 });
 function left() { move(-50, 0); }
 function right() { move(50, 0); }
-function up() { move(avatar.getLinearVelocity().x, 300); }
+function up() { move(avatar.getLinearVelocity().x, 200); }
 function move(x, y) {
 avatar.setLinearVelocity(
 new THREE.Vector3(x, y, 0)
@@ -125,7 +160,7 @@ new THREE.Vector3(x, y, 0)
 function reset() {
 avatar.__dirtyPosition = true;
 avatar.position.set(-50, 50, 0);
-avatar.setLinearVelocity(new THREE.Vector3(0, 300, 0));
+avatar.setLinearVelocity(new THREE.Vector3(0, 150, 0));
 for (var i in scene._objects) {
 if (scene._objects[i].is_fruit) {
 scene.remove(scene._objects[i]);
@@ -134,6 +169,7 @@ scene.remove(scene._objects[i]);
 scoreboard.score(0);
 if (game_over) {
 game_over = false;
+scoreboard.setMessage();
 animate();
 gameStep();
 }
