@@ -198,7 +198,7 @@ function addBackground() {
   function gameStep() {
     scene.simulate();
     if (ball.position.y < -100) resetBall(ball);
-    // Update physics 60 times a second so that motion is smooth
+    // Update physics 60 times a second so that motion is smoother
     setTimeout(gameStep, 1000/60);
   }
   gameStep();
